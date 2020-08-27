@@ -27,19 +27,19 @@ import {
   NativeWebViewMacOS,
   ViewManager,
   State,
-  RNCWebViewUIManagerMacOS,
+  RNCWebViewAmazonUIManagerMacOS,
 } from './WebViewTypes';
 
 import styles from './WebView.styles';
 
-const UIManager = NotTypedUIManager as RNCWebViewUIManagerMacOS;
+const UIManager = NotTypedUIManager as RNCWebViewAmazonUIManagerMacOS;
 
 const { resolveAssetSource } = Image;
 
-const RNCWebViewManager = NativeModules.RNCWebViewManager as ViewManager;
+const RNCWebViewAmazonManager = NativeModules.RNCWebViewAmazonManager as ViewManager;
 
-const RNCWebView: typeof NativeWebViewMacOS = requireNativeComponent(
-  'RNCWebView',
+const RNCWebViewAmazon: typeof NativeWebViewMacOS = requireNativeComponent(
+  'RNCWebViewAmazon',
 );
 
 class WebView extends React.Component<MacOSWebViewProps, State> {
@@ -63,7 +63,7 @@ class WebView extends React.Component<MacOSWebViewProps, State> {
   webViewRef = React.createRef<NativeWebViewMacOS>();
 
   // eslint-disable-next-line react/sort-comp
-  getCommands = () => UIManager.getViewManagerConfig('RNCWebView').Commands;
+  getCommands = () => UIManager.getViewManagerConfig('RNCWebViewAmazon').Commands;
 
   /**
    * Go forward one page in the web view's history.
@@ -239,7 +239,7 @@ class WebView extends React.Component<MacOSWebViewProps, State> {
   ) => {
     const viewManager
       = (this.props.nativeConfig && this.props.nativeConfig.viewManager)
-      || RNCWebViewManager;
+      || RNCWebViewAmazonManager;
 
     viewManager.startLoadWithResult(!!shouldStart, lockIdentifier);
   };
@@ -295,7 +295,7 @@ class WebView extends React.Component<MacOSWebViewProps, State> {
       );
     } else if (this.state.viewState !== 'IDLE') {
       console.error(
-        `RNCWebView invalid state encountered: ${this.state.viewState}`,
+        `RNCWebViewAmazon invalid state encountered: ${this.state.viewState}`,
       );
     }
 
@@ -311,7 +311,7 @@ class WebView extends React.Component<MacOSWebViewProps, State> {
 
     const NativeWebView
       = (nativeConfig.component as typeof NativeWebViewMacOS | undefined)
-      || RNCWebView;
+      || RNCWebViewAmazon;
 
     const webView = (
       <NativeWebView

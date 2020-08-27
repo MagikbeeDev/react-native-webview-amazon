@@ -30,15 +30,15 @@ import {
   AndroidWebViewProps,
   NativeWebViewAndroid,
   State,
-  RNCWebViewUIManagerAndroid,
+  RNCWebViewAmazonUIManagerAndroid,
 } from './WebViewTypes';
 
 import styles from './WebView.styles';
 
-const UIManager = NotTypedUIManager as RNCWebViewUIManagerAndroid;
+const UIManager = NotTypedUIManager as RNCWebViewAmazonUIManagerAndroid;
 
-const RNCWebView = requireNativeComponent(
-  'RNCWebView',
+const RNCWebViewAmazon = requireNativeComponent(
+  'RNCWebViewAmazon',
 ) as typeof NativeWebViewAndroid;
 const { resolveAssetSource } = Image;
 
@@ -67,7 +67,7 @@ class WebView extends React.Component<AndroidWebViewProps, State> {
 
   static isFileUploadSupported = async () => {
     // native implementation should return "true" only for Android 5+
-    return NativeModules.RNCWebView.isFileUploadSupported();
+    return NativeModules.RNCWebViewAmazon.isFileUploadSupported();
   };
 
   startUrl: string | null = null;
@@ -87,7 +87,7 @@ class WebView extends React.Component<AndroidWebViewProps, State> {
     BatchedBridge.registerCallableModule(this.messagingModuleName, this);
   };
 
-  getCommands = () => UIManager.getViewManagerConfig('RNCWebView').Commands;
+  getCommands = () => UIManager.getViewManagerConfig('RNCWebViewAmazon').Commands;
 
   goForward = () => {
     UIManager.dispatchViewManagerCommand(
@@ -284,7 +284,7 @@ class WebView extends React.Component<AndroidWebViewProps, State> {
     lockIdentifier?: number,
   ) => {
     if (lockIdentifier) {
-      NativeModules.RNCWebView.onShouldStartLoadWithRequestCallback(shouldStart, lockIdentifier);
+      NativeModules.RNCWebViewAmazon.onShouldStartLoadWithRequestCallback(shouldStart, lockIdentifier);
     } else if (shouldStart) {
       UIManager.dispatchViewManagerCommand(
         this.getWebViewHandle(),
@@ -322,7 +322,7 @@ class WebView extends React.Component<AndroidWebViewProps, State> {
       );
     } else if (this.state.viewState !== 'IDLE') {
       console.error(
-        `RNCWebView invalid state encountered: ${this.state.viewState}`,
+        `RNCWebViewAmazon invalid state encountered: ${this.state.viewState}`,
       );
     }
 
@@ -340,7 +340,7 @@ class WebView extends React.Component<AndroidWebViewProps, State> {
     }
 
     const NativeWebView
-      = (nativeConfig.component as typeof NativeWebViewAndroid) || RNCWebView;
+      = (nativeConfig.component as typeof NativeWebViewAndroid) || RNCWebViewAmazon;
 
     this.onShouldStartLoadWithRequest = createOnShouldStartLoadWithRequest(
       this.onShouldStartLoadWithRequestCallback,

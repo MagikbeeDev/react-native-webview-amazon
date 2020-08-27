@@ -31,11 +31,11 @@ import {
   WebViewErrorEvent,
   WebViewHttpErrorEvent,
   WebViewMessageEvent,
-  RNCWebViewUIManagerWindows,
+  RNCWebViewAmazonUIManagerWindows,
   State,
 } from './WebViewTypes';
 
-const UIManager = NotTypedUIManager as RNCWebViewUIManagerWindows;
+const UIManager = NotTypedUIManager as RNCWebViewAmazonUIManagerWindows;
 const { resolveAssetSource } = Image;
 const RCTWebView: typeof NativeWebViewWindows = requireNativeComponent(
   'RCTWebView',
