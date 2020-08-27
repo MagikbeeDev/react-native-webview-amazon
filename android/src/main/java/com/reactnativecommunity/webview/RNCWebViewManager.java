@@ -117,7 +117,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @ReactModule(name = RNCWebViewManager.REACT_CLASS)
 public class RNCWebViewManager extends SimpleViewManager<WebView> {
-  private static final String TAG = "RNCWebViewManager";
+  private static final String TAG = "RNCWebViewAmazonManager";
 
   public static final int COMMAND_GO_BACK = 1;
   public static final int COMMAND_GO_FORWARD = 2;
@@ -133,7 +133,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
   public static final int COMMAND_CLEAR_CACHE = 1001;
   public static final int COMMAND_CLEAR_HISTORY = 1002;
 
-  protected static final String REACT_CLASS = "RNCWebView";
+  protected static final String REACT_CLASS = "RNCWebViewAmazon";
   protected static final String HTML_ENCODING = "UTF-8";
   protected static final String HTML_MIME_TYPE = "text/html";
   protected static final String JAVASCRIPT_INTERFACE = "ReactNativeWebView";
