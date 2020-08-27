@@ -812,17 +812,17 @@ public class RNCWebViewAmazonManager extends SimpleViewManager<WebView> {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-      final RNCWebViewAmazon rncWebView = (RNCWebViewAmazon) view;
+      final RNCWebViewAmazon rncWebViewAmazon = (RNCWebViewAmazon) view;
       final boolean isJsDebugging = ((ReactContext) view.getContext()).getJavaScriptContextHolder().get() == 0;
 
-      if (!isJsDebugging && rncWebView.mCatalystInstance != null) {
+      if (!isJsDebugging && rncWebViewAmazon.mCatalystInstance != null) {
         final Pair<Integer, AtomicReference<ShouldOverrideCallbackState>> lock = RNCWebViewAmazonModule.shouldOverrideUrlLoadingLock.getNewLock();
         final int lockIdentifier = lock.first;
         final AtomicReference<ShouldOverrideCallbackState> lockObject = lock.second;
 
         final WritableMap event = createWebViewEvent(view, url);
         event.putInt("lockIdentifier", lockIdentifier);
-        rncWebView.sendDirectMessage("onShouldStartLoadWithRequest", event);
+        rncWebViewAmazon.sendDirectMessage("onShouldStartLoadWithRequest", event);
 
         try {
           assert lockObject != null;
@@ -1191,7 +1191,7 @@ public class RNCWebViewAmazonManager extends SimpleViewManager<WebView> {
     protected @Nullable
     String messagingModuleName;
     protected @Nullable
-    RNCWebViewAmazonClient mRNCWebViewClient;
+    RNCWebViewAmazonClient mRNCWebViewAmazonClient;
     protected @Nullable
     CatalystInstance mCatalystInstance;
     protected boolean sendContentSizeChangeEvents = false;
@@ -1212,7 +1212,7 @@ public class RNCWebViewAmazonManager extends SimpleViewManager<WebView> {
     }
 
     public void setIgnoreErrFailedForThisURL(String url) {
-      mRNCWebViewClient.setIgnoreErrFailedForThisURL(url);
+      mRNCWebViewAmazonClient.setIgnoreErrFailedForThisURL(url);
     }
 
     public void setSendContentSizeChangeEvents(boolean sendContentSizeChangeEvents) {
@@ -1258,8 +1258,8 @@ public class RNCWebViewAmazonManager extends SimpleViewManager<WebView> {
     public void setWebViewClient(WebViewClient client) {
       super.setWebViewClient(client);
       if (client instanceof RNCWebViewAmazonClient) {
-        mRNCWebViewClient = (RNCWebViewAmazonClient) client;
-        mRNCWebViewClient.setProgressChangedFilter(progressChangedFilter);
+        mRNCWebViewAmazonClient = (RNCWebViewAmazonClient) client;
+        mRNCWebViewAmazonClient.setProgressChangedFilter(progressChangedFilter);
       }
     }
 
@@ -1275,7 +1275,7 @@ public class RNCWebViewAmazonManager extends SimpleViewManager<WebView> {
 
     public @Nullable
     RNCWebViewAmazonClient getRNCWebViewAmazonClient() {
-      return mRNCWebViewClient;
+      return mRNCWebViewAmazonClient;
     }
 
     public void setInjectedJavaScript(@Nullable String js) {
@@ -1359,15 +1359,15 @@ public class RNCWebViewAmazonManager extends SimpleViewManager<WebView> {
       ReactContext reactContext = (ReactContext) this.getContext();
       RNCWebViewAmazon mContext = this;
 
-      if (mRNCWebViewClient != null) {
+      if (mRNCWebViewAmazonClient != null) {
         WebView webView = this;
         webView.post(new Runnable() {
           @Override
           public void run() {
-            if (mRNCWebViewClient == null) {
+            if (mRNCWebViewAmazonClient == null) {
               return;
             }
-            WritableMap data = mRNCWebViewClient.createWebViewEvent(webView, webView.getUrl());
+            WritableMap data = mRNCWebViewAmazonClient.createWebViewEvent(webView, webView.getUrl());
             data.putString("data", message);
 
             if (mCatalystInstance != null) {
