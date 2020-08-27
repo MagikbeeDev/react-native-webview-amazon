@@ -1,6 +1,6 @@
 {
-  "name": "react-native-webview",
-  "description": "React Native WebView component for iOS, Android, macOS, and Windows",
+  "name": "react-native-webview-amazon",
+  "description": "React Native WebView component for Amazon",
   "main": "index.js",
   "typings": "index.d.ts",
   "author": "Jamon Holmgren <jamon@infinite.red>",
