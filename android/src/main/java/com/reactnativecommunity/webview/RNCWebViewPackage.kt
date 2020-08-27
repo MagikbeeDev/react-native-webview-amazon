@@ -4,7 +4,7 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.ReactApplicationContext
 
 
-class RNCWebViewPackage: ReactPackage {
+class RNCWebViewAmazonPackage: ReactPackage {
   override fun createNativeModules(reactContext: ReactApplicationContext) = listOf(
     RNCWebViewModule(reactContext)
   )
