@@ -4,8 +4,8 @@ import { Linking, View, ActivityIndicator, Text } from 'react-native';
 import {
   OnShouldStartLoadWithRequest,
   ShouldStartLoadRequestEvent,
-} from './WebViewTypes';
-import styles from './WebView.styles';
+} from './WebViewAmazonTypes';
+import styles from './WebViewAmazon.styles';
 
 const defaultOriginWhitelist = ['http://*', 'https://*'];
 

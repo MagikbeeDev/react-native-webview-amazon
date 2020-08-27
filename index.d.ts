@@ -1,12 +1,12 @@
 import { Component } from 'react';
 // eslint-disable-next-line
-import { IOSWebViewProps, AndroidWebViewProps } from './lib/WebViewTypes';
+import { IOSWebViewAmazonProps, AndroidWebViewAmazonProps } from './lib/WebViewAmazonTypes';
 
-export { FileDownload, WebViewMessageEvent, WebViewNavigation } from "./lib/WebViewTypes";
+export { FileDownload, WebViewAmazonMessageEvent, WebViewAmazonNavigation } from "./lib/WebViewAmazonTypes";
 
-export type WebViewProps = IOSWebViewProps & AndroidWebViewProps;
+export type WebViewAmazonProps = IOSWebViewAmazonProps & AndroidWebViewAmazonProps;
 
-declare class WebView extends Component<WebViewProps> {
+declare class WebViewAmazon extends Component<WebViewAmazonProps> {
     /**
      * Go back one page in the webview's history.
      */
@@ -38,10 +38,10 @@ declare class WebView extends Component<WebViewProps> {
     injectJavaScript: (script: string) => void;
 
     /**
-     * Focuses on WebView redered page.
+     * Focuses on WebViewAmazon redered page.
      */
     requestFocus: () => void;
 }
 
-export {WebView};
-export default WebView;
+export {WebViewAmazon};
+export default WebViewAmazon;

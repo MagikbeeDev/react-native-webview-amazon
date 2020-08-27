@@ -22,23 +22,23 @@ import {
 } from 'react-native';
 import {
   createOnShouldStartLoadWithRequest,
-} from './WebViewShared';
+} from './WebViewAmazonShared';
 import {
-  NativeWebViewWindows,
-  WebViewSharedProps,
-  WebViewProgressEvent,
-  WebViewNavigationEvent,
-  WebViewErrorEvent,
-  WebViewHttpErrorEvent,
-  WebViewMessageEvent,
+  NativeWebViewAmazonWindows,
+  WebViewAmazonSharedProps,
+  WebViewAmazonProgressEvent,
+  WebViewAmazonNavigationEvent,
+  WebViewAmazonErrorEvent,
+  WebViewAmazonHttpErrorEvent,
+  WebViewAmazonMessageEvent,
   RNCWebViewAmazonUIManagerWindows,
   State,
-} from './WebViewTypes';
+} from './WebViewAmazonTypes';
 
 const UIManager = NotTypedUIManager as RNCWebViewAmazonUIManagerWindows;
 const { resolveAssetSource } = Image;
-const RCTWebView: typeof NativeWebViewWindows = requireNativeComponent(
-  'RCTWebView',
+const RCTWebViewAmazon: typeof NativeWebViewAmazonWindows = requireNativeComponent(
+  'RCTWebViewAmazon',
 );
 
 const styles = StyleSheet.create({
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class WebView extends React.Component<WebViewSharedProps, State> {
+export default class WebViewAmazon extends React.Component<WebViewAmazonSharedProps, State> {
 
   static defaultProps = {
     javaScriptEnabled: true,
@@ -70,44 +70,44 @@ export default class WebView extends React.Component<WebViewSharedProps, State> 
     lastErrorEvent: null,
   }
 
-  webViewRef = React.createRef<NativeWebViewWindows>();
+  webViewRef = React.createRef<NativeWebViewAmazonWindows>();
 
   goForward = () => {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
-      UIManager.getViewManagerConfig('RCTWebView').Commands.goForward,
+      this.getWebViewAmazonHandle(),
+      UIManager.getViewManagerConfig('RCTWebViewAmazon').Commands.goForward,
       undefined,
     );
   }
 
   goBack = () => {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
-      UIManager.getViewManagerConfig('RCTWebView').Commands.goBack,
+      this.getWebViewAmazonHandle(),
+      UIManager.getViewManagerConfig('RCTWebViewAmazon').Commands.goBack,
       undefined,
     );
   }
 
   reload = () => {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
-      UIManager.getViewManagerConfig('RCTWebView').Commands.reload,
+      this.getWebViewAmazonHandle(),
+      UIManager.getViewManagerConfig('RCTWebViewAmazon').Commands.reload,
       undefined,
     );
   }
 
   injectJavaScript = (data: string) => {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
-      UIManager.getViewManagerConfig('RCTWebView').Commands.injectJavaScript,
+      this.getWebViewAmazonHandle(),
+      UIManager.getViewManagerConfig('RCTWebViewAmazon').Commands.injectJavaScript,
       [data],
     );
   }
 
   postMessage = (data: string) => {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
-      UIManager.getViewManagerConfig('RCTWebView').Commands.postMessage,
+      this.getWebViewAmazonHandle(),
+      UIManager.getViewManagerConfig('RCTWebViewAmazon').Commands.postMessage,
       [String(data)],
     );
   };
@@ -116,18 +116,18 @@ export default class WebView extends React.Component<WebViewSharedProps, State> 
    * We return an event with a bunch of fields including:
    *  url, title, loading, canGoBack, canGoForward
    */
-  updateNavigationState = (event: WebViewNavigationEvent) => {
+  updateNavigationState = (event: WebViewAmazonNavigationEvent) => {
     if (this.props.onNavigationStateChange) {
       this.props.onNavigationStateChange(event.nativeEvent);
     }
   }
 
-  getWebViewHandle = () => {
+  getWebViewAmazonHandle = () => {
     // eslint-disable-next-line react/no-string-refs
     return findNodeHandle(this.webViewRef.current);
   }
 
-  onLoadingStart = (event: WebViewNavigationEvent) => {
+  onLoadingStart = (event: WebViewAmazonNavigationEvent) => {
     const { onLoadStart } = this.props;
     if(onLoadStart) {
       onLoadStart(event);
@@ -135,14 +135,14 @@ export default class WebView extends React.Component<WebViewSharedProps, State> 
     this.updateNavigationState(event);
   }
 
-  onLoadingProgress = (event: WebViewProgressEvent) => {
+  onLoadingProgress = (event: WebViewAmazonProgressEvent) => {
     const { onLoadProgress } = this.props;
     if (onLoadProgress) {
       onLoadProgress(event);
     }
   };
 
-  onLoadingError = (event: WebViewErrorEvent) => {
+  onLoadingError = (event: WebViewAmazonErrorEvent) => {
     event.persist(); // persist this event because we need to store it
     const {onError, onLoadEnd} = this.props;
     if(onError) {
@@ -158,7 +158,7 @@ export default class WebView extends React.Component<WebViewSharedProps, State> 
     });
   }
 
-  onLoadingFinish =(event: WebViewNavigationEvent) => {
+  onLoadingFinish =(event: WebViewAmazonNavigationEvent) => {
     const {onLoad, onLoadEnd} = this.props;
     if(onLoad) {
       onLoad(event);
@@ -172,14 +172,14 @@ export default class WebView extends React.Component<WebViewSharedProps, State> 
     this.updateNavigationState(event);
   }
 
-  onMessage = (event: WebViewMessageEvent) => {
+  onMessage = (event: WebViewAmazonMessageEvent) => {
     const { onMessage } = this.props;
     if (onMessage) {
       onMessage(event);
     }
   }
 
-  onHttpError = (event: WebViewHttpErrorEvent) => {
+  onHttpError = (event: WebViewAmazonHttpErrorEvent) => {
     const { onHttpError } = this.props;
     if (onHttpError) {
       onHttpError(event);
@@ -212,7 +212,7 @@ export default class WebView extends React.Component<WebViewSharedProps, State> 
           errorEvent.description,
         );
     } else if (this.state.viewState !== 'IDLE') {
-      console.error('RCTWebView invalid state encountered: ', this.state.viewState);
+      console.error('RCTWebViewAmazon invalid state encountered: ', this.state.viewState);
     }
 
     const webViewStyles = [styles.container, this.props.style];
@@ -231,12 +231,12 @@ export default class WebView extends React.Component<WebViewSharedProps, State> 
       onShouldStartLoadWithRequestProp,
     );
 
-    const NativeWebView
-    = (nativeConfig.component as typeof NativeWebViewWindows | undefined)
-    || RCTWebView;
+    const NativeWebViewAmazon
+    = (nativeConfig.component as typeof NativeWebViewAmazonWindows | undefined)
+    || RCTWebViewAmazon;
 
     const webView = (
-      <NativeWebView
+      <NativeWebViewAmazon
         ref={this.webViewRef}
         key="webViewKey"
         {...otherProps}

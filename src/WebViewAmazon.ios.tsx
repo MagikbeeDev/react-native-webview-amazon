@@ -15,23 +15,23 @@ import {
   createOnShouldStartLoadWithRequest,
   defaultRenderError,
   defaultRenderLoading,
-} from './WebViewShared';
+} from './WebViewAmazonShared';
 import {
-  WebViewErrorEvent,
-  WebViewHttpErrorEvent,
-  WebViewMessageEvent,
-  WebViewNavigationEvent,
-  WebViewProgressEvent,
-  WebViewTerminatedEvent,
-  IOSWebViewProps,
+  WebViewAmazonErrorEvent,
+  WebViewAmazonHttpErrorEvent,
+  WebViewAmazonMessageEvent,
+  WebViewAmazonNavigationEvent,
+  WebViewAmazonProgressEvent,
+  WebViewAmazonTerminatedEvent,
+  IOSWebViewAmazonProps,
   DecelerationRateConstant,
-  NativeWebViewIOS,
+  NativeWebViewAmazonIOS,
   ViewManager,
   State,
   RNCWebViewAmazonUIManagerIOS,
-} from './WebViewTypes';
+} from './WebViewAmazonTypes';
 
-import styles from './WebView.styles';
+import styles from './WebViewAmazon.styles';
 
 const UIManager = NotTypedUIManager as RNCWebViewAmazonUIManagerIOS;
 
@@ -50,11 +50,11 @@ const processDecelerationRate = (
 
 const RNCWebViewAmazonManager = NativeModules.RNCWebViewAmazonManager as ViewManager;
 
-const RNCWebViewAmazon: typeof NativeWebViewIOS = requireNativeComponent(
+const RNCWebViewAmazon: typeof NativeWebViewAmazonIOS = requireNativeComponent(
   'RNCWebViewAmazon',
 );
 
-class WebView extends React.Component<IOSWebViewProps, State> {
+class WebViewAmazon extends React.Component<IOSWebViewAmazonProps, State> {
   static defaultProps = {
     javaScriptEnabled: true,
     cacheEnabled: true,
@@ -72,7 +72,7 @@ class WebView extends React.Component<IOSWebViewProps, State> {
     lastErrorEvent: null,
   };
 
-  webViewRef = React.createRef<NativeWebViewIOS>();
+  webViewRef = React.createRef<NativeWebViewAmazonIOS>();
 
   // eslint-disable-next-line react/sort-comp
   getCommands = () => UIManager.getViewManagerConfig('RNCWebViewAmazon').Commands;
@@ -82,7 +82,7 @@ class WebView extends React.Component<IOSWebViewProps, State> {
    */
   goForward = () => {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
+      this.getWebViewAmazonHandle(),
       this.getCommands().goForward,
       undefined,
     );
@@ -93,7 +93,7 @@ class WebView extends React.Component<IOSWebViewProps, State> {
    */
   goBack = () => {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
+      this.getWebViewAmazonHandle(),
       this.getCommands().goBack,
       undefined,
     );
@@ -105,7 +105,7 @@ class WebView extends React.Component<IOSWebViewProps, State> {
   reload = () => {
     this.setState({ viewState: 'LOADING' });
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
+      this.getWebViewAmazonHandle(),
       this.getCommands().reload,
       undefined,
     );
@@ -116,18 +116,18 @@ class WebView extends React.Component<IOSWebViewProps, State> {
    */
   stopLoading = () => {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
+      this.getWebViewAmazonHandle(),
       this.getCommands().stopLoading,
       undefined,
     );
   };
 
   /**
-   * Request focus on WebView rendered page.
+   * Request focus on WebViewAmazon rendered page.
    */
   requestFocus = () => {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
+      this.getWebViewAmazonHandle(),
       this.getCommands().requestFocus,
       undefined,
     );
@@ -145,21 +145,21 @@ class WebView extends React.Component<IOSWebViewProps, State> {
    */
   postMessage = (data: string) => {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
+      this.getWebViewAmazonHandle(),
       this.getCommands().postMessage,
       [String(data)],
     );
   };
 
   /**
-   * Injects a javascript string into the referenced WebView. Deliberately does not
+   * Injects a javascript string into the referenced WebViewAmazon. Deliberately does not
    * return a response because using eval() to return a response breaks this method
    * on pages with a Content Security Policy that disallows eval(). If you need that
    * functionality, look into postMessage/onMessage.
    */
   injectJavaScript = (data: string) => {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
+      this.getWebViewAmazonHandle(),
       this.getCommands().injectJavaScript,
       [data],
     );
@@ -169,22 +169,22 @@ class WebView extends React.Component<IOSWebViewProps, State> {
    * We return an event with a bunch of fields including:
    *  url, title, loading, canGoBack, canGoForward
    */
-  updateNavigationState = (event: WebViewNavigationEvent) => {
+  updateNavigationState = (event: WebViewAmazonNavigationEvent) => {
     if (this.props.onNavigationStateChange) {
       this.props.onNavigationStateChange(event.nativeEvent);
     }
   };
 
   /**
-   * Returns the native `WebView` node.
+   * Returns the native `WebViewAmazon` node.
    */
-  getWebViewHandle = () => {
+  getWebViewAmazonHandle = () => {
     const nodeHandle = findNodeHandle(this.webViewRef.current);
     invariant(nodeHandle != null, 'nodeHandle expected to be non-null');
     return nodeHandle as number;
   };
 
-  onLoadingStart = (event: WebViewNavigationEvent) => {
+  onLoadingStart = (event: WebViewAmazonNavigationEvent) => {
     const { onLoadStart } = this.props;
     if (onLoadStart) {
       onLoadStart(event);
@@ -192,7 +192,7 @@ class WebView extends React.Component<IOSWebViewProps, State> {
     this.updateNavigationState(event);
   };
 
-  onLoadingError = (event: WebViewErrorEvent) => {
+  onLoadingError = (event: WebViewAmazonErrorEvent) => {
     event.persist(); // persist this event because we need to store it
     const { onError, onLoadEnd } = this.props;
     if (onLoadEnd) {
@@ -209,14 +209,14 @@ class WebView extends React.Component<IOSWebViewProps, State> {
     });
   };
 
-  onHttpError = (event: WebViewHttpErrorEvent) => {
+  onHttpError = (event: WebViewAmazonHttpErrorEvent) => {
     const { onHttpError } = this.props;
     if (onHttpError) {
       onHttpError(event);
     }
   }
 
-  onLoadingFinish = (event: WebViewNavigationEvent) => {
+  onLoadingFinish = (event: WebViewAmazonNavigationEvent) => {
     const { onLoad, onLoadEnd } = this.props;
     if (onLoad) {
       onLoad(event);
@@ -230,14 +230,14 @@ class WebView extends React.Component<IOSWebViewProps, State> {
     this.updateNavigationState(event);
   };
 
-  onMessage = (event: WebViewMessageEvent) => {
+  onMessage = (event: WebViewAmazonMessageEvent) => {
     const { onMessage } = this.props;
     if (onMessage) {
       onMessage(event);
     }
   };
 
-  onLoadingProgress = (event: WebViewProgressEvent) => {
+  onLoadingProgress = (event: WebViewAmazonProgressEvent) => {
     const { onLoadProgress } = this.props;
     if (onLoadProgress) {
       onLoadProgress(event);
@@ -256,14 +256,14 @@ class WebView extends React.Component<IOSWebViewProps, State> {
     viewManager.startLoadWithResult(!!shouldStart, lockIdentifier);
   };
 
-  onContentProcessDidTerminate = (event: WebViewTerminatedEvent) => {
+  onContentProcessDidTerminate = (event: WebViewAmazonTerminatedEvent) => {
     const { onContentProcessDidTerminate } = this.props;
     if (onContentProcessDidTerminate) {
       onContentProcessDidTerminate(event);
     }
   };
 
-  componentDidUpdate(prevProps: IOSWebViewProps) {
+  componentDidUpdate(prevProps: IOSWebViewAmazonProps) {
     this.showRedboxOnPropChanges(prevProps, 'allowsInlineMediaPlayback');
     this.showRedboxOnPropChanges(prevProps, 'incognito');
     this.showRedboxOnPropChanges(prevProps, 'mediaPlaybackRequiresUserAction');
@@ -271,8 +271,8 @@ class WebView extends React.Component<IOSWebViewProps, State> {
   }
 
   showRedboxOnPropChanges(
-    prevProps: IOSWebViewProps,
-    propName: keyof IOSWebViewProps,
+    prevProps: IOSWebViewAmazonProps,
+    propName: keyof IOSWebViewAmazonProps,
   ) {
     if (this.props[propName] !== prevProps[propName]) {
       console.error(
@@ -327,12 +327,12 @@ class WebView extends React.Component<IOSWebViewProps, State> {
 
     const decelerationRate = processDecelerationRate(decelerationRateProp);
 
-    const NativeWebView
-      = (nativeConfig.component as typeof NativeWebViewIOS | undefined)
+    const NativeWebViewAmazon
+      = (nativeConfig.component as typeof NativeWebViewAmazonIOS | undefined)
       || RNCWebViewAmazon;
 
     const webView = (
-      <NativeWebView
+      <NativeWebViewAmazon
         key="webViewKey"
         {...otherProps}
         decelerationRate={decelerationRate}
@@ -368,4 +368,4 @@ class WebView extends React.Component<IOSWebViewProps, State> {
   }
 }
 
-export default WebView;
+export default WebViewAmazon;

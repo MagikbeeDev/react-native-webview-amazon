@@ -1,4 +1,4 @@
-import WebView from './lib/WebView';
+import WebViewAmazon from './lib/WebViewAmazon';
 
-export { WebView };
-export default WebView;
+export { WebViewAmazon };
+export default WebViewAmazon;

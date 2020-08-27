@@ -12,9 +12,9 @@ import {
   NativeScrollEvent,
 } from 'react-native';
 
-type WebViewCommands = 'goForward' | 'goBack' | 'reload' | 'stopLoading' | 'postMessage' | 'injectJavaScript' | 'loadUrl' | 'requestFocus';
+type WebViewAmazonCommands = 'goForward' | 'goBack' | 'reload' | 'stopLoading' | 'postMessage' | 'injectJavaScript' | 'loadUrl' | 'requestFocus';
 
-type AndroidWebViewCommands = 'clearHistory' | 'clearCache' | 'clearFormData';
+type AndroidWebViewAmazonCommands = 'clearHistory' | 'clearCache' | 'clearFormData';
 
 
 
@@ -26,61 +26,61 @@ interface RNCWebViewAmazonUIManager<Commands extends string> extends UIManagerSt
   };
 }
 
-export type RNCWebViewAmazonUIManagerAndroid = RNCWebViewAmazonUIManager<WebViewCommands | AndroidWebViewCommands>
-export type RNCWebViewAmazonUIManagerIOS = RNCWebViewAmazonUIManager<WebViewCommands>
-export type RNCWebViewAmazonUIManagerMacOS = RNCWebViewAmazonUIManager<WebViewCommands>
-export type RNCWebViewAmazonUIManagerWindows = RNCWebViewAmazonUIManager<WebViewCommands>
+export type RNCWebViewAmazonUIManagerAndroid = RNCWebViewAmazonUIManager<WebViewAmazonCommands | AndroidWebViewAmazonCommands>
+export type RNCWebViewAmazonUIManagerIOS = RNCWebViewAmazonUIManager<WebViewAmazonCommands>
+export type RNCWebViewAmazonUIManagerMacOS = RNCWebViewAmazonUIManager<WebViewAmazonCommands>
+export type RNCWebViewAmazonUIManagerWindows = RNCWebViewAmazonUIManager<WebViewAmazonCommands>
 
 
-type WebViewState = 'IDLE' | 'LOADING' | 'ERROR';
+type WebViewAmazonState = 'IDLE' | 'LOADING' | 'ERROR';
 
 interface BaseState {
-  viewState: WebViewState;
+  viewState: WebViewAmazonState;
 }
 
 interface NormalState extends BaseState {
   viewState: 'IDLE' | 'LOADING';
-  lastErrorEvent: WebViewError | null;
+  lastErrorEvent: WebViewAmazonError | null;
 }
 
 interface ErrorState extends BaseState {
   viewState: 'ERROR';
-  lastErrorEvent: WebViewError;
+  lastErrorEvent: WebViewAmazonError;
 }
 
 export type State = NormalState | ErrorState;
 
 // eslint-disable-next-line react/prefer-stateless-function
-declare class NativeWebViewIOSComponent extends Component<
-  IOSNativeWebViewProps
+declare class NativeWebViewAmazonIOSComponent extends Component<
+  IOSNativeWebViewAmazonProps
 > {}
-declare const NativeWebViewIOSBase: Constructor<NativeMethodsMixin> &
-  typeof NativeWebViewIOSComponent;
-export class NativeWebViewIOS extends NativeWebViewIOSBase {}
+declare const NativeWebViewAmazonIOSBase: Constructor<NativeMethodsMixin> &
+  typeof NativeWebViewAmazonIOSComponent;
+export class NativeWebViewAmazonIOS extends NativeWebViewAmazonIOSBase {}
 
 // eslint-disable-next-line react/prefer-stateless-function
-declare class NativeWebViewMacOSComponent extends Component<
-  MacOSNativeWebViewProps
+declare class NativeWebViewAmazonMacOSComponent extends Component<
+  MacOSNativeWebViewAmazonProps
 > {}
-declare const NativeWebViewMacOSBase: Constructor<NativeMethodsMixin> &
-  typeof NativeWebViewMacOSComponent;
-export class NativeWebViewMacOS extends NativeWebViewMacOSBase {}
+declare const NativeWebViewAmazonMacOSBase: Constructor<NativeMethodsMixin> &
+  typeof NativeWebViewAmazonMacOSComponent;
+export class NativeWebViewAmazonMacOS extends NativeWebViewAmazonMacOSBase {}
 
 // eslint-disable-next-line react/prefer-stateless-function
-declare class NativeWebViewAndroidComponent extends Component<
-  AndroidNativeWebViewProps
+declare class NativeWebViewAmazonAndroidComponent extends Component<
+  AndroidNativeWebViewAmazonProps
 > {}
-declare const NativeWebViewAndroidBase: Constructor<NativeMethodsMixin> &
-  typeof NativeWebViewAndroidComponent;
-export class NativeWebViewAndroid extends NativeWebViewAndroidBase {}
+declare const NativeWebViewAmazonAndroidBase: Constructor<NativeMethodsMixin> &
+  typeof NativeWebViewAmazonAndroidComponent;
+export class NativeWebViewAmazonAndroid extends NativeWebViewAmazonAndroidBase {}
 
 // eslint-disable-next-line react/prefer-stateless-function
-declare class NativeWebViewWindowsComponent extends Component<
-  WindowsNativeWebViewProps
+declare class NativeWebViewAmazonWindowsComponent extends Component<
+  WindowsNativeWebViewAmazonProps
 > {}
-declare const NativeWebViewWindowsBase: Constructor<NativeMethodsMixin> &
-  typeof NativeWebViewWindowsComponent;
-export class NativeWebViewWindows extends NativeWebViewWindowsBase {}
+declare const NativeWebViewAmazonWindowsBase: Constructor<NativeMethodsMixin> &
+  typeof NativeWebViewAmazonWindowsComponent;
+export class NativeWebViewAmazonWindows extends NativeWebViewAmazonWindowsBase {}
 
 export interface ContentInsetProp {
   top?: number;
@@ -89,7 +89,7 @@ export interface ContentInsetProp {
   right?: number;
 }
 
-export interface WebViewNativeEvent {
+export interface WebViewAmazonNativeEvent {
   url: string;
   loading: boolean;
   title: string;
@@ -98,11 +98,11 @@ export interface WebViewNativeEvent {
   lockIdentifier: number;
 }
 
-export interface WebViewNativeProgressEvent extends WebViewNativeEvent {
+export interface WebViewAmazonNativeProgressEvent extends WebViewAmazonNativeEvent {
   progress: number;
 }
 
-export interface WebViewNavigation extends WebViewNativeEvent {
+export interface WebViewAmazonNavigation extends WebViewAmazonNativeEvent {
   navigationType:
     | 'click'
     | 'formsubmit'
@@ -113,7 +113,7 @@ export interface WebViewNavigation extends WebViewNativeEvent {
   mainDocumentURL?: string;
 }
 
-export interface ShouldStartLoadRequest extends WebViewNavigation {
+export interface ShouldStartLoadRequest extends WebViewAmazonNavigation {
   isTopFrame: boolean;
 }
 
@@ -123,11 +123,11 @@ export interface FileDownload {
 
 export type DecelerationRateConstant = 'normal' | 'fast';
 
-export interface WebViewMessage extends WebViewNativeEvent {
+export interface WebViewAmazonMessage extends WebViewAmazonNativeEvent {
   data: string;
 }
 
-export interface WebViewError extends WebViewNativeEvent {
+export interface WebViewAmazonError extends WebViewAmazonNativeEvent {
   /**
    * `domain` is only used on iOS and macOS
    */
@@ -136,36 +136,36 @@ export interface WebViewError extends WebViewNativeEvent {
   description: string;
 }
 
-export interface WebViewHttpError extends WebViewNativeEvent {
+export interface WebViewAmazonHttpError extends WebViewAmazonNativeEvent {
   description: string;
   statusCode: number;
 }
 
-export interface WebViewRenderProcessGoneDetail {
+export interface WebViewAmazonRenderProcessGoneDetail {
   didCrash: boolean;
 }
 
-export type WebViewEvent = NativeSyntheticEvent<WebViewNativeEvent>;
+export type WebViewAmazonEvent = NativeSyntheticEvent<WebViewAmazonNativeEvent>;
 
-export type WebViewProgressEvent = NativeSyntheticEvent<
-  WebViewNativeProgressEvent
+export type WebViewAmazonProgressEvent = NativeSyntheticEvent<
+  WebViewAmazonNativeProgressEvent
 >;
 
-export type WebViewNavigationEvent = NativeSyntheticEvent<WebViewNavigation>;
+export type WebViewAmazonNavigationEvent = NativeSyntheticEvent<WebViewAmazonNavigation>;
 
 export type ShouldStartLoadRequestEvent = NativeSyntheticEvent<ShouldStartLoadRequest>;
 
 export type FileDownloadEvent = NativeSyntheticEvent<FileDownload>;
 
-export type WebViewMessageEvent = NativeSyntheticEvent<WebViewMessage>;
+export type WebViewAmazonMessageEvent = NativeSyntheticEvent<WebViewAmazonMessage>;
 
-export type WebViewErrorEvent = NativeSyntheticEvent<WebViewError>;
+export type WebViewAmazonErrorEvent = NativeSyntheticEvent<WebViewAmazonError>;
 
-export type WebViewTerminatedEvent = NativeSyntheticEvent<WebViewNativeEvent>;
+export type WebViewAmazonTerminatedEvent = NativeSyntheticEvent<WebViewAmazonNativeEvent>;
 
-export type WebViewHttpErrorEvent = NativeSyntheticEvent<WebViewHttpError>;
+export type WebViewAmazonHttpErrorEvent = NativeSyntheticEvent<WebViewAmazonHttpError>;
 
-export type WebViewRenderProcessGoneEvent = NativeSyntheticEvent<WebViewRenderProcessGoneDetail>;
+export type WebViewAmazonRenderProcessGoneEvent = NativeSyntheticEvent<WebViewAmazonRenderProcessGoneDetail>;
 
 export type DataDetectorTypes =
   | 'phoneNumber'
@@ -184,9 +184,9 @@ export type CacheMode = 'LOAD_DEFAULT' | 'LOAD_CACHE_ONLY' | 'LOAD_CACHE_ELSE_NE
 
 export type AndroidLayerType = 'none' | 'software' | 'hardware';
 
-export interface WebViewSourceUri {
+export interface WebViewAmazonSourceUri {
   /**
-   * The URI to load in the `WebView`. Can be a local or remote file.
+   * The URI to load in the `WebViewAmazon`. Can be a local or remote file.
    */
   uri: string;
 
@@ -211,9 +211,9 @@ export interface WebViewSourceUri {
   body?: string;
 }
 
-export interface WebViewSourceHtml {
+export interface WebViewAmazonSourceHtml {
   /**
-   * A static HTML page to display in the WebView.
+   * A static HTML page to display in the WebViewAmazon.
    */
   html: string;
   /**
@@ -222,20 +222,20 @@ export interface WebViewSourceHtml {
   baseUrl?: string;
 }
 
-export type WebViewSource = WebViewSourceUri | WebViewSourceHtml;
+export type WebViewAmazonSource = WebViewAmazonSourceUri | WebViewAmazonSourceHtml;
 
 export interface ViewManager {
   startLoadWithResult: Function;
 }
 
-export interface WebViewNativeConfig {
+export interface WebViewAmazonNativeConfig {
   /**
-   * The native component used to render the WebView.
+   * The native component used to render the WebViewAmazon.
    */
-  component?: typeof NativeWebViewIOS | typeof NativeWebViewMacOS | typeof NativeWebViewAndroid;
+  component?: typeof NativeWebViewAmazonIOS | typeof NativeWebViewAmazonMacOS | typeof NativeWebViewAmazonAndroid;
   /**
-   * Set props directly on the native component WebView. Enables custom props which the
-   * original WebView doesn't pass through.
+   * Set props directly on the native component WebViewAmazon. Enables custom props which the
+   * original WebViewAmazon doesn't pass through.
    */
   props?: Object;
   /**
@@ -249,7 +249,7 @@ export type OnShouldStartLoadWithRequest = (
   event: ShouldStartLoadRequest,
 ) => boolean;
 
-export interface CommonNativeWebViewProps extends ViewProps {
+export interface CommonNativeWebViewAmazonProps extends ViewProps {
   cacheEnabled?: boolean;
   incognito?: boolean;
   injectedJavaScript?: string;
@@ -260,12 +260,12 @@ export interface CommonNativeWebViewProps extends ViewProps {
   mediaPlaybackRequiresUserAction?: boolean;
   messagingEnabled: boolean;
   onScroll?: (event: NativeScrollEvent) => void;
-  onLoadingError: (event: WebViewErrorEvent) => void;
-  onLoadingFinish: (event: WebViewNavigationEvent) => void;
-  onLoadingProgress: (event: WebViewProgressEvent) => void;
-  onLoadingStart: (event: WebViewNavigationEvent) => void;
-  onHttpError: (event: WebViewHttpErrorEvent) => void;
-  onMessage: (event: WebViewMessageEvent) => void;
+  onLoadingError: (event: WebViewAmazonErrorEvent) => void;
+  onLoadingFinish: (event: WebViewAmazonNavigationEvent) => void;
+  onLoadingProgress: (event: WebViewAmazonProgressEvent) => void;
+  onLoadingStart: (event: WebViewAmazonNavigationEvent) => void;
+  onHttpError: (event: WebViewAmazonHttpErrorEvent) => void;
+  onMessage: (event: WebViewAmazonMessageEvent) => void;
   onShouldStartLoadWithRequest: (event: ShouldStartLoadRequestEvent) => void;
   showsHorizontalScrollIndicator?: boolean;
   showsVerticalScrollIndicator?: boolean;
@@ -279,7 +279,7 @@ export interface CommonNativeWebViewProps extends ViewProps {
   applicationNameForUserAgent?: string;
 }
 
-export interface AndroidNativeWebViewProps extends CommonNativeWebViewProps {
+export interface AndroidNativeWebViewAmazonProps extends CommonNativeWebViewAmazonProps {
   cacheMode?: CacheMode;
   allowFileAccess?: boolean;
   scalesPageToFit?: boolean;
@@ -291,8 +291,8 @@ export interface AndroidNativeWebViewProps extends CommonNativeWebViewProps {
   geolocationEnabled?: boolean;
   javaScriptEnabled?: boolean;
   mixedContentMode?: 'never' | 'always' | 'compatibility';
-  onContentSizeChange?: (event: WebViewEvent) => void;
-  onRenderProcessGone?: (event: WebViewRenderProcessGoneEvent) => void;
+  onContentSizeChange?: (event: WebViewAmazonEvent) => void;
+  onRenderProcessGone?: (event: WebViewAmazonRenderProcessGoneEvent) => void;
   overScrollMode?: OverScrollModeType;
   saveFormDataDisabled?: boolean;
   textZoom?: number;
@@ -305,7 +305,7 @@ export declare type ContentInsetAdjustmentBehavior = 'automatic' | 'scrollableAx
 
 export declare type ContentMode = 'recommended' | 'mobile' | 'desktop';
 
-export interface IOSNativeWebViewProps extends CommonNativeWebViewProps {
+export interface IOSNativeWebViewAmazonProps extends CommonNativeWebViewAmazonProps {
   allowingReadAccessToURL?: string;
   allowsBackForwardNavigationGestures?: boolean;
   allowsInlineMediaPlayback?: boolean;
@@ -322,13 +322,13 @@ export interface IOSNativeWebViewProps extends CommonNativeWebViewProps {
   pagingEnabled?: boolean;
   scrollEnabled?: boolean;
   useSharedProcessPool?: boolean;
-  onContentProcessDidTerminate?: (event: WebViewTerminatedEvent) => void;
+  onContentProcessDidTerminate?: (event: WebViewAmazonTerminatedEvent) => void;
   injectedJavaScriptForMainFrameOnly?: boolean;
   injectedJavaScriptBeforeContentLoadedForMainFrameOnly?: boolean;
   onFileDownload?: (event: FileDownloadEvent) => void;
 }
 
-export interface MacOSNativeWebViewProps extends CommonNativeWebViewProps {
+export interface MacOSNativeWebViewAmazonProps extends CommonNativeWebViewAmazonProps {
   allowingReadAccessToURL?: string;
   allowsBackForwardNavigationGestures?: boolean;
   allowsInlineMediaPlayback?: boolean;
@@ -342,16 +342,16 @@ export interface MacOSNativeWebViewProps extends CommonNativeWebViewProps {
   pagingEnabled?: boolean;
   scrollEnabled?: boolean;
   useSharedProcessPool?: boolean;
-  onContentProcessDidTerminate?: (event: WebViewTerminatedEvent) => void;
+  onContentProcessDidTerminate?: (event: WebViewAmazonTerminatedEvent) => void;
 }
 
-export interface WindowsNativeWebViewProps extends CommonNativeWebViewProps {
+export interface WindowsNativeWebViewAmazonProps extends CommonNativeWebViewAmazonProps {
   testID?: string
 }
 
-export interface IOSWebViewProps extends WebViewSharedProps {
+export interface IOSWebViewAmazonProps extends WebViewAmazonSharedProps {
   /**
-   * Does not store any data within the lifetime of the WebView.
+   * Does not store any data within the lifetime of the WebViewAmazon.
    */
   incognito?: boolean;
 
@@ -377,7 +377,7 @@ export interface IOSWebViewProps extends WebViewSharedProps {
 
   /**
    * Boolean value that determines whether scrolling is enabled in the
-   * `WebView`. The default value is `true`.
+   * `WebViewAmazon`. The default value is `true`.
    * @platform ios
    */
   scrollEnabled?: boolean;
@@ -469,8 +469,8 @@ export interface IOSWebViewProps extends WebViewSharedProps {
    */
   allowsBackForwardNavigationGestures?: boolean;
   /**
-   * A Boolean value indicating whether WebKit WebView should be created using a shared
-   * process pool, enabling WebViews to share cookies and localStorage between each other.
+   * A Boolean value indicating whether WebKit WebViewAmazon should be created using a shared
+   * process pool, enabling WebViewAmazons to share cookies and localStorage between each other.
    * Default is true but can be set to false for backwards compatibility.
    * @platform ios
    */
@@ -519,9 +519,9 @@ export interface IOSWebViewProps extends WebViewSharedProps {
   keyboardDisplayRequiresUserAction?: boolean;
 
   /**
-   * A String value that indicates which URLs the WebView's file can then
+   * A String value that indicates which URLs the WebViewAmazon's file can then
    * reference in scripts, AJAX requests, and CSS imports. This is only used
-   * for WebViews that are loaded with a source.uri set to a `'file://'` URL.
+   * for WebViewAmazons that are loaded with a source.uri set to a `'file://'` URL.
    *
    * If not provided, the default is to only allow read access to the URL
    * provided in source.uri itself.
@@ -530,10 +530,10 @@ export interface IOSWebViewProps extends WebViewSharedProps {
   allowingReadAccessToURL?: string;
 
   /**
-   * Function that is invoked when the WebKit WebView content process gets terminated.
+   * Function that is invoked when the WebKit WebViewAmazon content process gets terminated.
    * @platform ios
    */
-  onContentProcessDidTerminate?: (event: WebViewTerminatedEvent) => void;
+  onContentProcessDidTerminate?: (event: WebViewAmazonTerminatedEvent) => void;
 
   /**
    * If `true` (default), loads the `injectedJavaScript` only into the main frame.
@@ -551,7 +551,7 @@ export interface IOSWebViewProps extends WebViewSharedProps {
 
   /**
    * Boolean value that determines whether a pull to refresh gesture is
-   * available in the `WebView`. The default value is `false`.
+   * available in the `WebViewAmazon`. The default value is `false`.
    * If `true`, sets `bounces` automatically to `true`
    * @platform ios
    *
@@ -577,9 +577,9 @@ export interface IOSWebViewProps extends WebViewSharedProps {
   onFileDownload?: (event: FileDownloadEvent) => void;
 }
 
-export interface MacOSWebViewProps extends WebViewSharedProps {
+export interface MacOSWebViewAmazonProps extends WebViewAmazonSharedProps {
   /**
-   * Does not store any data within the lifetime of the WebView.
+   * Does not store any data within the lifetime of the WebViewAmazon.
    */
   incognito?: boolean;
 
@@ -592,7 +592,7 @@ export interface MacOSWebViewProps extends WebViewSharedProps {
 
   /**
    * Boolean value that determines whether scrolling is enabled in the
-   * `WebView`. The default value is `true`.
+   * `WebViewAmazon`. The default value is `true`.
    * @platform macos
    */
   scrollEnabled?: boolean;
@@ -648,8 +648,8 @@ export interface MacOSWebViewProps extends WebViewSharedProps {
    */
   allowsBackForwardNavigationGestures?: boolean;
   /**
-   * A Boolean value indicating whether WebKit WebView should be created using a shared
-   * process pool, enabling WebViews to share cookies and localStorage between each other.
+   * A Boolean value indicating whether WebKit WebViewAmazon should be created using a shared
+   * process pool, enabling WebViewAmazons to share cookies and localStorage between each other.
    * Default is true but can be set to false for backwards compatibility.
    * @platform macos
    */
@@ -697,9 +697,9 @@ export interface MacOSWebViewProps extends WebViewSharedProps {
   keyboardDisplayRequiresUserAction?: boolean;
 
   /**
-   * A String value that indicates which URLs the WebView's file can then
+   * A String value that indicates which URLs the WebViewAmazon's file can then
    * reference in scripts, AJAX requests, and CSS imports. This is only used
-   * for WebViews that are loaded with a source.uri set to a `'file://'` URL.
+   * for WebViewAmazons that are loaded with a source.uri set to a `'file://'` URL.
    *
    * If not provided, the default is to only allow read access to the URL
    * provided in source.uri itself.
@@ -708,21 +708,21 @@ export interface MacOSWebViewProps extends WebViewSharedProps {
   allowingReadAccessToURL?: string;
 
   /**
-   * Function that is invoked when the WebKit WebView content process gets terminated.
+   * Function that is invoked when the WebKit WebViewAmazon content process gets terminated.
    * @platform macos
    */
-  onContentProcessDidTerminate?: (event: WebViewTerminatedEvent) => void;
+  onContentProcessDidTerminate?: (event: WebViewAmazonTerminatedEvent) => void;
 }
 
-export interface AndroidWebViewProps extends WebViewSharedProps {
-  onNavigationStateChange?: (event: WebViewNavigation) => void;
-  onContentSizeChange?: (event: WebViewEvent) => void;
+export interface AndroidWebViewAmazonProps extends WebViewAmazonSharedProps {
+  onNavigationStateChange?: (event: WebViewAmazonNavigation) => void;
+  onContentSizeChange?: (event: WebViewAmazonEvent) => void;
 
   /**
-   * Function that is invoked when the `WebView` process crashes or is killed by the OS.
+   * Function that is invoked when the `WebViewAmazon` process crashes or is killed by the OS.
    * Works only on Android (minimum API level 26).
    */
-  onRenderProcessGone?: (event: WebViewRenderProcessGoneEvent) => void;
+  onRenderProcessGone?: (event: WebViewAmazonRenderProcessGoneEvent) => void;
 
   /**
    * https://developer.android.com/reference/android/webkit/WebSettings.html#setCacheMode(int)
@@ -793,22 +793,22 @@ export interface AndroidWebViewProps extends WebViewSharedProps {
 
   /**
    * Used on Android only, controls whether the given list of URL prefixes should
-   * make {@link com.facebook.react.views.webview.ReactWebViewClient} to launch a
+   * make {@link com.facebook.react.views.webview.ReactWebViewAmazonClient} to launch a
    * default activity intent for those URL instead of loading it within the webview.
-   * Use this to list URLs that WebView cannot handle, e.g. a PDF url.
+   * Use this to list URLs that WebViewAmazon cannot handle, e.g. a PDF url.
    * @platform android
    */
   readonly urlPrefixesForDefaultIntent?: string[];
 
   /**
-   * Boolean value to disable Hardware Acceleration in the `WebView`. Used on Android only
+   * Boolean value to disable Hardware Acceleration in the `WebViewAmazon`. Used on Android only
    * as Hardware Acceleration is a feature only for Android. The default value is `false`.
    * @platform android
    */
   androidHardwareAccelerationDisabled?: boolean;
 
     /**
-   * https://developer.android.com/reference/android/webkit/WebView#setLayerType(int,%20android.graphics.Paint)
+   * https://developer.android.com/reference/android/webkit/WebViewAmazon#setLayerType(int,%20android.graphics.Paint)
    * Sets the layerType. Possible values are:
    *
    * - `'none'` (default)
@@ -820,7 +820,7 @@ export interface AndroidWebViewProps extends WebViewSharedProps {
   androidLayerType?: AndroidLayerType;
 
   /**
-   * Boolean value to enable third party cookies in the `WebView`. Used on
+   * Boolean value to enable third party cookies in the `WebViewAmazon`. Used on
    * Android Lollipop and above only as third party cookies are enabled by
    * default on Android Kitkat and below and on iOS. The default value is `true`.
    * @platform android
@@ -835,7 +835,7 @@ export interface AndroidWebViewProps extends WebViewSharedProps {
   domStorageEnabled?: boolean;
 
   /**
-   * Sets the user-agent for the `WebView`.
+   * Sets the user-agent for the `WebViewAmazon`.
    * @platform android
    */
   userAgent?: string;
@@ -847,13 +847,13 @@ export interface AndroidWebViewProps extends WebViewSharedProps {
   textZoom?: number;
 
   /**
-   * Specifies the mixed content mode. i.e WebView will allow a secure origin to load content from any other origin.
+   * Specifies the mixed content mode. i.e WebViewAmazon will allow a secure origin to load content from any other origin.
    *
    * Possible values for `mixedContentMode` are:
    *
-   * - `'never'` (default) - WebView will not allow a secure origin to load content from an insecure origin.
-   * - `'always'` - WebView will allow a secure origin to load content from any other origin, even if that origin is insecure.
-   * - `'compatibility'` -  WebView will attempt to be compatible with the approach of a modern web browser with regard to mixed content.
+   * - `'never'` (default) - WebViewAmazon will not allow a secure origin to load content from an insecure origin.
+   * - `'always'` - WebViewAmazon will allow a secure origin to load content from any other origin, even if that origin is insecure.
+   * - `'compatibility'` -  WebViewAmazon will attempt to be compatible with the approach of a modern web browser with regard to mixed content.
    * @platform android
    */
   mixedContentMode?: 'never' | 'always' | 'compatibility';
@@ -864,14 +864,14 @@ export interface AndroidWebViewProps extends WebViewSharedProps {
   allowsFullscreenVideo?: boolean;
 }
 
-export interface WebViewSharedProps extends ViewProps {
+export interface WebViewAmazonSharedProps extends ViewProps {
   /**
-   * Loads static html or a uri (with optional headers) in the WebView.
+   * Loads static html or a uri (with optional headers) in the WebViewAmazon.
    */
-  source?: WebViewSource;
+  source?: WebViewAmazonSource;
 
   /**
-   * Boolean value to enable JavaScript in the `WebView`. Used on Android only
+   * Boolean value to enable JavaScript in the `WebViewAmazon`. Used on Android only
    * as JavaScript is enabled by default on iOS. The default value is `true`.
    * @platform android
    */
@@ -903,57 +903,57 @@ export interface WebViewSharedProps extends ViewProps {
   renderLoading?: () => ReactElement;
 
   /**
-   * Function that is invoked when the `WebView` scrolls.
+   * Function that is invoked when the `WebViewAmazon` scrolls.
    */
   onScroll?: (event: NativeScrollEvent) => void;
 
   /**
-   * Function that is invoked when the `WebView` has finished loading.
+   * Function that is invoked when the `WebViewAmazon` has finished loading.
    */
-  onLoad?: (event: WebViewNavigationEvent) => void;
+  onLoad?: (event: WebViewAmazonNavigationEvent) => void;
 
   /**
-   * Function that is invoked when the `WebView` load succeeds or fails.
+   * Function that is invoked when the `WebViewAmazon` load succeeds or fails.
    */
-  onLoadEnd?: (event: WebViewNavigationEvent | WebViewErrorEvent) => void;
+  onLoadEnd?: (event: WebViewAmazonNavigationEvent | WebViewAmazonErrorEvent) => void;
 
   /**
-   * Function that is invoked when the `WebView` starts loading.
+   * Function that is invoked when the `WebViewAmazon` starts loading.
    */
-  onLoadStart?: (event: WebViewNavigationEvent) => void;
+  onLoadStart?: (event: WebViewAmazonNavigationEvent) => void;
 
   /**
-   * Function that is invoked when the `WebView` load fails.
+   * Function that is invoked when the `WebViewAmazon` load fails.
    */
-  onError?: (event: WebViewErrorEvent) => void;
+  onError?: (event: WebViewAmazonErrorEvent) => void;
 
   /**
-   * Function that is invoked when the `WebView` receives an error status code.
+   * Function that is invoked when the `WebViewAmazon` receives an error status code.
    * Works on iOS and Android (minimum API level 23).
    */
-  onHttpError?: (event: WebViewHttpErrorEvent) => void;
+  onHttpError?: (event: WebViewAmazonHttpErrorEvent) => void;
 
   /**
-   * Function that is invoked when the `WebView` loading starts or ends.
+   * Function that is invoked when the `WebViewAmazon` loading starts or ends.
    */
-  onNavigationStateChange?: (event: WebViewNavigation) => void;
+  onNavigationStateChange?: (event: WebViewAmazonNavigation) => void;
 
   /**
-   * Function that is invoked when the webview calls `window.ReactNativeWebView.postMessage`.
+   * Function that is invoked when the webview calls `window.ReactNativeWebViewAmazon.postMessage`.
    * Setting this property will inject this global into your webview.
    *
-   * `window.ReactNativeWebView.postMessage` accepts one argument, `data`, which will be
+   * `window.ReactNativeWebViewAmazon.postMessage` accepts one argument, `data`, which will be
    * available on the event object, `event.nativeEvent.data`. `data` must be a string.
    */
-  onMessage?: (event: WebViewMessageEvent) => void;
+  onMessage?: (event: WebViewAmazonMessageEvent) => void;
 
   /**
-   * Function that is invoked when the `WebView` is loading.
+   * Function that is invoked when the `WebViewAmazon` is loading.
    */
-  onLoadProgress?: (event: WebViewProgressEvent) => void;
+  onLoadProgress?: (event: WebViewAmazonProgressEvent) => void;
 
   /**
-   * Boolean value that forces the `WebView` to show the loading view
+   * Boolean value that forces the `WebViewAmazon` to show the loading view
    * on the first load.
    */
   startInLoadingState?: boolean;
@@ -984,13 +984,13 @@ export interface WebViewSharedProps extends ViewProps {
 
   /**
    * Boolean value that determines whether a horizontal scroll indicator is
-   * shown in the `WebView`. The default value is `true`.
+   * shown in the `WebViewAmazon`. The default value is `true`.
    */
   showsHorizontalScrollIndicator?: boolean;
 
   /**
    * Boolean value that determines whether a vertical scroll indicator is
-   * shown in the `WebView`. The default value is `true`.
+   * shown in the `WebViewAmazon`. The default value is `true`.
    */
   showsVerticalScrollIndicator?: boolean;
 
@@ -1017,10 +1017,10 @@ export interface WebViewSharedProps extends ViewProps {
   onShouldStartLoadWithRequest?: OnShouldStartLoadWithRequest;
 
   /**
-   * Override the native component used to render the WebView. Enables a custom native
-   * WebView which uses the same JavaScript as the original WebView.
+   * Override the native component used to render the WebViewAmazon. Enables a custom native
+   * WebViewAmazon which uses the same JavaScript as the original WebViewAmazon.
    */
-  nativeConfig?: WebViewNativeConfig;
+  nativeConfig?: WebViewAmazonNativeConfig;
 
   /**
    * Should caching be enabled. Default is true.
