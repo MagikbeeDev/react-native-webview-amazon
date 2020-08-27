@@ -1441,7 +1441,7 @@ public class RNCWebViewAmazonManager extends SimpleViewManager<WebView> {
     }
 
     protected class RNCWebViewAmazonBridge {
-      RNCWebView mContext;
+      RNCWebViewAmazon mContext;
 
       RNCWebViewAmazonBridge(RNCWebViewAmazon c) {
         mContext = c;
