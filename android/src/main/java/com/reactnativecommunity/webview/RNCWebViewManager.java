@@ -31,7 +31,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.PermissionRequest;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
+// import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -144,7 +144,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
   protected static final int SHOULD_OVERRIDE_URL_LOADING_TIMEOUT = 250;
   protected WebViewConfig mWebViewConfig;
 
-  protected RNCWebChromeClient mWebChromeClient = null;
+  // protected RNCWebChromeClient mWebChromeClient = null;
   protected boolean mAllowsFullscreenVideo = false;
   protected @Nullable String mUserAgent = null;
   protected @Nullable String mUserAgentWithApplicationName = null;
@@ -180,7 +180,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   protected WebView createViewInstance(ThemedReactContext reactContext) {
     RNCWebView webView = createRNCWebViewInstance(reactContext);
-    setupWebChromeClient(reactContext, webView);
+    // setupWebChromeClient(reactContext, webView);
     reactContext.addLifecycleEventListener(webView);
     mWebViewConfig.configWebView(webView);
     WebSettings settings = webView.getSettings();
@@ -566,7 +566,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
     WebView view,
     @Nullable Boolean allowsFullscreenVideo) {
     mAllowsFullscreenVideo = allowsFullscreenVideo != null && allowsFullscreenVideo;
-    setupWebChromeClient((ReactContext)view.getContext(), view);
+    // setupWebChromeClient((ReactContext)view.getContext(), view);
   }
 
   @ReactProp(name = "allowFileAccess")
@@ -699,76 +699,76 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
     return reactContext.getNativeModule(RNCWebViewModule.class);
   }
 
-  protected void setupWebChromeClient(ReactContext reactContext, WebView webView) {
-    if (mAllowsFullscreenVideo) {
-      int initialRequestedOrientation = reactContext.getCurrentActivity().getRequestedOrientation();
-      mWebChromeClient = new RNCWebChromeClient(reactContext, webView) {
-        @Override
-        public Bitmap getDefaultVideoPoster() {
-          return Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
-        }
+  // protected void setupWebChromeClient(ReactContext reactContext, WebView webView) {
+  //   if (mAllowsFullscreenVideo) {
+  //     int initialRequestedOrientation = reactContext.getCurrentActivity().getRequestedOrientation();
+  //     mWebChromeClient = new RNCWebChromeClient(reactContext, webView) {
+  //       @Override
+  //       public Bitmap getDefaultVideoPoster() {
+  //         return Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
+  //       }
 
-        @Override
-        public void onShowCustomView(View view, CustomViewCallback callback) {
-          if (mVideoView != null) {
-            callback.onCustomViewHidden();
-            return;
-          }
+  //       @Override
+  //       public void onShowCustomView(View view, CustomViewCallback callback) {
+  //         if (mVideoView != null) {
+  //           callback.onCustomViewHidden();
+  //           return;
+  //         }
 
-          mVideoView = view;
-          mCustomViewCallback = callback;
+  //         mVideoView = view;
+  //         mCustomViewCallback = callback;
 
-          mReactContext.getCurrentActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+  //         mReactContext.getCurrentActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mVideoView.setSystemUiVisibility(FULLSCREEN_SYSTEM_UI_VISIBILITY);
-            mReactContext.getCurrentActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-          }
+  //         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+  //           mVideoView.setSystemUiVisibility(FULLSCREEN_SYSTEM_UI_VISIBILITY);
+  //           mReactContext.getCurrentActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+  //         }
 
-          mVideoView.setBackgroundColor(Color.BLACK);
-          getRootView().addView(mVideoView, FULLSCREEN_LAYOUT_PARAMS);
-          mWebView.setVisibility(View.GONE);
+  //         mVideoView.setBackgroundColor(Color.BLACK);
+  //         getRootView().addView(mVideoView, FULLSCREEN_LAYOUT_PARAMS);
+  //         mWebView.setVisibility(View.GONE);
 
-          mReactContext.addLifecycleEventListener(this);
-        }
+  //         mReactContext.addLifecycleEventListener(this);
+  //       }
 
-        @Override
-        public void onHideCustomView() {
-          if (mVideoView == null) {
-            return;
-          }
+  //       @Override
+  //       public void onHideCustomView() {
+  //         if (mVideoView == null) {
+  //           return;
+  //         }
 
-          mVideoView.setVisibility(View.GONE);
-          getRootView().removeView(mVideoView);
-          mCustomViewCallback.onCustomViewHidden();
+  //         mVideoView.setVisibility(View.GONE);
+  //         getRootView().removeView(mVideoView);
+  //         mCustomViewCallback.onCustomViewHidden();
 
-          mVideoView = null;
-          mCustomViewCallback = null;
+  //         mVideoView = null;
+  //         mCustomViewCallback = null;
 
-          mWebView.setVisibility(View.VISIBLE);
+  //         mWebView.setVisibility(View.VISIBLE);
 
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mReactContext.getCurrentActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-          }
-          mReactContext.getCurrentActivity().setRequestedOrientation(initialRequestedOrientation);
+  //         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+  //           mReactContext.getCurrentActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+  //         }
+  //         mReactContext.getCurrentActivity().setRequestedOrientation(initialRequestedOrientation);
 
-          mReactContext.removeLifecycleEventListener(this);
-        }
-      };
-      webView.setWebChromeClient(mWebChromeClient);
-    } else {
-      if (mWebChromeClient != null) {
-        mWebChromeClient.onHideCustomView();
-      }
-      mWebChromeClient = new RNCWebChromeClient(reactContext, webView) {
-        @Override
-        public Bitmap getDefaultVideoPoster() {
-          return Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
-        }
-      };
-      webView.setWebChromeClient(mWebChromeClient);
-    }
-  }
+  //         mReactContext.removeLifecycleEventListener(this);
+  //       }
+  //     };
+  //     webView.setWebChromeClient(mWebChromeClient);
+  //   } else {
+  //     if (mWebChromeClient != null) {
+  //       mWebChromeClient.onHideCustomView();
+  //     }
+  //     mWebChromeClient = new RNCWebChromeClient(reactContext, webView) {
+  //       @Override
+  //       public Bitmap getDefaultVideoPoster() {
+  //         return Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
+  //       }
+  //     };
+  //     webView.setWebChromeClient(mWebChromeClient);
+  //   }
+  // }
 
   protected static class RNCWebViewClient extends WebViewClient {
 
@@ -1031,144 +1031,144 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
     }
   }
 
-  protected static class RNCWebChromeClient extends WebChromeClient implements LifecycleEventListener {
-    protected static final FrameLayout.LayoutParams FULLSCREEN_LAYOUT_PARAMS = new FrameLayout.LayoutParams(
-      LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER);
+  // protected static class RNCWebChromeClient extends WebChromeClient implements LifecycleEventListener {
+  //   protected static final FrameLayout.LayoutParams FULLSCREEN_LAYOUT_PARAMS = new FrameLayout.LayoutParams(
+  //     LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER);
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    protected static final int FULLSCREEN_SYSTEM_UI_VISIBILITY = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-      View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-      View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-      View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-      View.SYSTEM_UI_FLAG_FULLSCREEN |
-      View.SYSTEM_UI_FLAG_IMMERSIVE |
-      View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+  //   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+  //   protected static final int FULLSCREEN_SYSTEM_UI_VISIBILITY = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+  //     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+  //     View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+  //     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+  //     View.SYSTEM_UI_FLAG_FULLSCREEN |
+  //     View.SYSTEM_UI_FLAG_IMMERSIVE |
+  //     View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
-    protected ReactContext mReactContext;
-    protected View mWebView;
+  //   protected ReactContext mReactContext;
+  //   protected View mWebView;
 
-    protected View mVideoView;
-    protected WebChromeClient.CustomViewCallback mCustomViewCallback;
+  //   protected View mVideoView;
+  //   protected WebChromeClient.CustomViewCallback mCustomViewCallback;
 
-    protected RNCWebView.ProgressChangedFilter progressChangedFilter = null;
+  //   protected RNCWebView.ProgressChangedFilter progressChangedFilter = null;
 
-    public RNCWebChromeClient(ReactContext reactContext, WebView webView) {
-      this.mReactContext = reactContext;
-      this.mWebView = webView;
-    }
+  //   public RNCWebChromeClient(ReactContext reactContext, WebView webView) {
+  //     this.mReactContext = reactContext;
+  //     this.mWebView = webView;
+  //   }
 
-    @Override
-    public boolean onConsoleMessage(ConsoleMessage message) {
-      if (ReactBuildConfig.DEBUG) {
-        return super.onConsoleMessage(message);
-      }
-      // Ignore console logs in non debug builds.
-      return true;
-    }
+  //   @Override
+  //   public boolean onConsoleMessage(ConsoleMessage message) {
+  //     if (ReactBuildConfig.DEBUG) {
+  //       return super.onConsoleMessage(message);
+  //     }
+  //     // Ignore console logs in non debug builds.
+  //     return true;
+  //   }
 
-    // Fix WebRTC permission request error.
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void onPermissionRequest(final PermissionRequest request) {
-      String[] requestedResources = request.getResources();
-      ArrayList<String> permissions = new ArrayList<>();
-      ArrayList<String> grantedPermissions = new ArrayList<String>();
-      for (int i = 0; i < requestedResources.length; i++) {
-        if (requestedResources[i].equals(PermissionRequest.RESOURCE_AUDIO_CAPTURE)) {
-          permissions.add(Manifest.permission.RECORD_AUDIO);
-        } else if (requestedResources[i].equals(PermissionRequest.RESOURCE_VIDEO_CAPTURE)) {
-          permissions.add(Manifest.permission.CAMERA);
-        }
-        // TODO: RESOURCE_MIDI_SYSEX, RESOURCE_PROTECTED_MEDIA_ID.
-      }
+  //   // Fix WebRTC permission request error.
+  //   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  //   @Override
+  //   public void onPermissionRequest(final PermissionRequest request) {
+  //     String[] requestedResources = request.getResources();
+  //     ArrayList<String> permissions = new ArrayList<>();
+  //     ArrayList<String> grantedPermissions = new ArrayList<String>();
+  //     for (int i = 0; i < requestedResources.length; i++) {
+  //       if (requestedResources[i].equals(PermissionRequest.RESOURCE_AUDIO_CAPTURE)) {
+  //         permissions.add(Manifest.permission.RECORD_AUDIO);
+  //       } else if (requestedResources[i].equals(PermissionRequest.RESOURCE_VIDEO_CAPTURE)) {
+  //         permissions.add(Manifest.permission.CAMERA);
+  //       }
+  //       // TODO: RESOURCE_MIDI_SYSEX, RESOURCE_PROTECTED_MEDIA_ID.
+  //     }
 
-      for (int i = 0; i < permissions.size(); i++) {
-        if (ContextCompat.checkSelfPermission(mReactContext, permissions.get(i)) != PackageManager.PERMISSION_GRANTED) {
-          continue;
-        }
-        if (permissions.get(i).equals(Manifest.permission.RECORD_AUDIO)) {
-          grantedPermissions.add(PermissionRequest.RESOURCE_AUDIO_CAPTURE);
-        } else if (permissions.get(i).equals(Manifest.permission.CAMERA)) {
-          grantedPermissions.add(PermissionRequest.RESOURCE_VIDEO_CAPTURE);
-        }
-      }
+  //     for (int i = 0; i < permissions.size(); i++) {
+  //       if (ContextCompat.checkSelfPermission(mReactContext, permissions.get(i)) != PackageManager.PERMISSION_GRANTED) {
+  //         continue;
+  //       }
+  //       if (permissions.get(i).equals(Manifest.permission.RECORD_AUDIO)) {
+  //         grantedPermissions.add(PermissionRequest.RESOURCE_AUDIO_CAPTURE);
+  //       } else if (permissions.get(i).equals(Manifest.permission.CAMERA)) {
+  //         grantedPermissions.add(PermissionRequest.RESOURCE_VIDEO_CAPTURE);
+  //       }
+  //     }
 
-      if (grantedPermissions.isEmpty()) {
-        request.deny();
-      } else {
-        String[] grantedPermissionsArray = new String[grantedPermissions.size()];
-        grantedPermissionsArray = grantedPermissions.toArray(grantedPermissionsArray);
-        request.grant(grantedPermissionsArray);
-      }
-    }
+  //     if (grantedPermissions.isEmpty()) {
+  //       request.deny();
+  //     } else {
+  //       String[] grantedPermissionsArray = new String[grantedPermissions.size()];
+  //       grantedPermissionsArray = grantedPermissions.toArray(grantedPermissionsArray);
+  //       request.grant(grantedPermissionsArray);
+  //     }
+  //   }
 
-    @Override
-    public void onProgressChanged(WebView webView, int newProgress) {
-      super.onProgressChanged(webView, newProgress);
-      final String url = webView.getUrl();
-      if (progressChangedFilter.isWaitingForCommandLoadUrl()) {
-        return;
-      }
-      WritableMap event = Arguments.createMap();
-      event.putDouble("target", webView.getId());
-      event.putString("title", webView.getTitle());
-      event.putString("url", url);
-      event.putBoolean("canGoBack", webView.canGoBack());
-      event.putBoolean("canGoForward", webView.canGoForward());
-      event.putDouble("progress", (float) newProgress / 100);
-      dispatchEvent(
-        webView,
-        new TopLoadingProgressEvent(
-          webView.getId(),
-          event));
-    }
+  //   @Override
+  //   public void onProgressChanged(WebView webView, int newProgress) {
+  //     super.onProgressChanged(webView, newProgress);
+  //     final String url = webView.getUrl();
+  //     if (progressChangedFilter.isWaitingForCommandLoadUrl()) {
+  //       return;
+  //     }
+  //     WritableMap event = Arguments.createMap();
+  //     event.putDouble("target", webView.getId());
+  //     event.putString("title", webView.getTitle());
+  //     event.putString("url", url);
+  //     event.putBoolean("canGoBack", webView.canGoBack());
+  //     event.putBoolean("canGoForward", webView.canGoForward());
+  //     event.putDouble("progress", (float) newProgress / 100);
+  //     dispatchEvent(
+  //       webView,
+  //       new TopLoadingProgressEvent(
+  //         webView.getId(),
+  //         event));
+  //   }
 
-    @Override
-    public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-      callback.invoke(origin, true, false);
-    }
+  //   @Override
+  //   public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+  //     callback.invoke(origin, true, false);
+  //   }
 
-    protected void openFileChooser(ValueCallback<Uri> filePathCallback, String acceptType) {
-      getModule(mReactContext).startPhotoPickerIntent(filePathCallback, acceptType);
-    }
+  //   protected void openFileChooser(ValueCallback<Uri> filePathCallback, String acceptType) {
+  //     getModule(mReactContext).startPhotoPickerIntent(filePathCallback, acceptType);
+  //   }
 
-    protected void openFileChooser(ValueCallback<Uri> filePathCallback) {
-      getModule(mReactContext).startPhotoPickerIntent(filePathCallback, "");
-    }
+  //   protected void openFileChooser(ValueCallback<Uri> filePathCallback) {
+  //     getModule(mReactContext).startPhotoPickerIntent(filePathCallback, "");
+  //   }
 
-    protected void openFileChooser(ValueCallback<Uri> filePathCallback, String acceptType, String capture) {
-      getModule(mReactContext).startPhotoPickerIntent(filePathCallback, acceptType);
-    }
+  //   protected void openFileChooser(ValueCallback<Uri> filePathCallback, String acceptType, String capture) {
+  //     getModule(mReactContext).startPhotoPickerIntent(filePathCallback, acceptType);
+  //   }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-      String[] acceptTypes = fileChooserParams.getAcceptTypes();
-      boolean allowMultiple = fileChooserParams.getMode() == WebChromeClient.FileChooserParams.MODE_OPEN_MULTIPLE;
-      return getModule(mReactContext).startPhotoPickerIntent(filePathCallback, acceptTypes, allowMultiple);
-    }
+  //   // @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  //   // @Override
+  //   // public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+  //   //   String[] acceptTypes = fileChooserParams.getAcceptTypes();
+  //   //   boolean allowMultiple = fileChooserParams.getMode() == WebChromeClient.FileChooserParams.MODE_OPEN_MULTIPLE;
+  //   //   return getModule(mReactContext).startPhotoPickerIntent(filePathCallback, acceptTypes, allowMultiple);
+  //   // }
 
-    @Override
-    public void onHostResume() {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mVideoView != null && mVideoView.getSystemUiVisibility() != FULLSCREEN_SYSTEM_UI_VISIBILITY) {
-        mVideoView.setSystemUiVisibility(FULLSCREEN_SYSTEM_UI_VISIBILITY);
-      }
-    }
+  //   @Override
+  //   public void onHostResume() {
+  //     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mVideoView != null && mVideoView.getSystemUiVisibility() != FULLSCREEN_SYSTEM_UI_VISIBILITY) {
+  //       mVideoView.setSystemUiVisibility(FULLSCREEN_SYSTEM_UI_VISIBILITY);
+  //     }
+  //   }
 
-    @Override
-    public void onHostPause() { }
+  //   @Override
+  //   public void onHostPause() { }
 
-    @Override
-    public void onHostDestroy() { }
+  //   @Override
+  //   public void onHostDestroy() { }
 
-    protected ViewGroup getRootView() {
-      return (ViewGroup) mReactContext.getCurrentActivity().findViewById(android.R.id.content);
-    }
+  //   protected ViewGroup getRootView() {
+  //     return (ViewGroup) mReactContext.getCurrentActivity().findViewById(android.R.id.content);
+  //   }
 
-    public void setProgressChangedFilter(RNCWebView.ProgressChangedFilter filter) {
-      progressChangedFilter = filter;
-    }
-  }
+  //   public void setProgressChangedFilter(RNCWebView.ProgressChangedFilter filter) {
+  //     progressChangedFilter = filter;
+  //   }
+  // }
 
   /**
    * Subclass of {@link WebView} that implements {@link LifecycleEventListener} interface in order
@@ -1263,15 +1263,15 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
       }
     }
 
-    WebChromeClient mWebChromeClient;
-    @Override
-    public void setWebChromeClient(WebChromeClient client) {
-      this.mWebChromeClient = client;
-      super.setWebChromeClient(client);
-      if (client instanceof RNCWebChromeClient) {
-        ((RNCWebChromeClient) client).setProgressChangedFilter(progressChangedFilter);
-      }
-    }
+    // WebChromeClient mWebChromeClient;
+    // @Override
+    // public void setWebChromeClient(WebChromeClient client) {
+    //   this.mWebChromeClient = client;
+    //   super.setWebChromeClient(client);
+    //   if (client instanceof RNCWebChromeClient) {
+    //     ((RNCWebChromeClient) client).setProgressChangedFilter(progressChangedFilter);
+    //   }
+    // }
 
     public @Nullable
     RNCWebViewClient getRNCWebViewClient() {
@@ -1434,9 +1434,9 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
 
     @Override
     public void destroy() {
-      if (mWebChromeClient != null) {
-        mWebChromeClient.onHideCustomView();
-      }
+      // if (mWebChromeClient != null) {
+      //   mWebChromeClient.onHideCustomView();
+      // }
       super.destroy();
     }
 

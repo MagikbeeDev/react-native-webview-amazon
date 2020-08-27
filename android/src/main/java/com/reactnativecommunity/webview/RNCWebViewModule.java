@@ -21,7 +21,7 @@ import androidx.core.util.Pair;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
+// import android.webkit.WebChromeClient;
 import android.widget.Toast;
 
 import com.facebook.react.bridge.ActivityEventListener;
@@ -232,9 +232,9 @@ public class RNCWebViewModule extends ReactContextBaseJavaModule implements Acti
     }
 
     // we have one file selected
-    if (data.getData() != null && resultCode == RESULT_OK && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      return WebChromeClient.FileChooserParams.parseResult(resultCode, data);
-    }
+    // if (data.getData() != null && resultCode == RESULT_OK && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    //   return WebChromeClient.FileChooserParams.parseResult(resultCode, data);
+    // }
 
     return null;
   }
