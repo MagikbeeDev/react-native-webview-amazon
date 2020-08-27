@@ -7,7 +7,7 @@ import androidx.core.content.FileProvider;
  * <p>
  * See https://developer.android.com/guide/topics/manifest/provider-element.html for details.
  */
-public class RNCWebViewFileProvider extends FileProvider {
+public class RNCWebViewAmazonFileProvider extends FileProvider {
 
   // This class intentionally left blank.
 

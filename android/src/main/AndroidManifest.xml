@@ -3,7 +3,7 @@
 
   <application>
     <provider
-      android:name=".RNCWebViewFileProvider"
+      android:name=".RNCWebViewAmazonFileProvider"
       android:authorities="${applicationId}.fileprovider"
       android:exported="false"
       android:grantUriPermissions="true">

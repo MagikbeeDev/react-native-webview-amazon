@@ -6,10 +6,10 @@ import com.facebook.react.bridge.ReactApplicationContext
 
 class RNCWebViewAmazonPackage: ReactPackage {
   override fun createNativeModules(reactContext: ReactApplicationContext) = listOf(
-    RNCWebViewModule(reactContext)
+    RNCWebViewAmazonModule(reactContext)
   )
 
   override fun createViewManagers(reactContext: ReactApplicationContext) = listOf(
-    RNCWebViewManager()
+    RNCWebViewAmazonManager()
   )
 }
